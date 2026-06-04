@@ -5,6 +5,7 @@
 package myfirstsketch;
 
 import processing.core.PApplet;
+import processing.core.PImage;
 
 /**
  *
@@ -12,16 +13,16 @@ import processing.core.PApplet;
  */
 public class MySketch extends PApplet{
     private Player player;
+    private PImage bg;
     int stage = 0;
     
     public void settings(){
 	//sets the size of the window
-        size (400,400);
+        size (600,400);
     }
     
     public void setup(){
-	//sets the background colour using R,G,B (https://rgbcolorpicker.com/)
-        background(100,100,100);
+        bg = loadImage("images/background.png");
         textSize(20);
         player = new Player(this, 10, 200, "Player 1", 20, "images/64x64_player.png");
     }
@@ -34,6 +35,7 @@ public class MySketch extends PApplet{
             text("My cultural Story", 20, 50);
             text("Press any key to continue", 20, 100);
         } else if (stage ==1) {
+            image(bg, 0, 0, width, height);
             player.draw();
         }
         
