@@ -13,6 +13,7 @@ import processing.core.PImage;
  */
 public class MySketch extends PApplet{
     private Player player;
+    private Player npc;
     private PImage bg;
     int stage = 0;
     
@@ -24,7 +25,9 @@ public class MySketch extends PApplet{
     public void setup(){
         bg = loadImage("images/background.png");
         textSize(20);
-        player = new Player(this, 10, 200, "Player 1", 20, "images/64x64_player.png");
+        // new Player(PApplet p, x, y, name, w, imagePath)
+        player = new Player(this, 10, 200, "Player 1", 30, "images/monster.png");
+        npc = new Player(this, 108, 160, "npc 1", 35, "images/npc.png");
     }
     
     public void draw(){
@@ -37,6 +40,7 @@ public class MySketch extends PApplet{
         } else if (stage ==1) {
             image(bg, 0, 0, width, height);
             player.draw();
+            npc.draw();
         }
         
     if (keyPressed) {
@@ -51,7 +55,13 @@ public class MySketch extends PApplet{
         }
 
     }
+    
+    if (npc.isCollidingWith(player)) {
+        fill(255, 0, 0);
+        this.text("oouch! who are you?", npc.x, npc.y);
+    }
 }
+    
     public void keyPressed() {
         if (stage ==0) {
             if (keyCode == ENTER) {
@@ -63,6 +73,7 @@ public class MySketch extends PApplet{
     
     public void mousePressed() {
         player.moveTo(mouseX, mouseY);
+        System.out.println("x: "+ mouseX+ " y: "+ mouseY);
     }
         
 }
