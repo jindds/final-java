@@ -15,6 +15,7 @@ public class MySketch extends PApplet{
     private Player player;
     private Player npc;
     private PImage bg;
+    private PImage dialog1;
     int stage = 0;
     
     public void settings(){
@@ -28,6 +29,10 @@ public class MySketch extends PApplet{
         // new Player(PApplet p, x, y, name, w, imagePath)
         player = new Player(this, 10, 200, "Player 1", 30, "images/monster.png");
         npc = new Player(this, 108, 160, "npc 1", 35, "images/npc.png");
+        
+        // https://deathgenerator.com/#cs
+        dialog1 = loadImage("images/dialog1.png");
+        dialog1.resize(600, 0);
     }
     
     public void draw(){
@@ -57,8 +62,7 @@ public class MySketch extends PApplet{
     }
     
     if (npc.isCollidingWith(player)) {
-        fill(255, 0, 0);
-        this.text("oouch! who are you?", npc.x, npc.y);
+        image(dialog1, 0, 245);
     }
 }
     
