@@ -14,7 +14,7 @@ import processing.core.PImage;
 public class MySketch extends PApplet{
     private Player player;
     private Player npc;
-    private PImage bg;
+    private PImage bg, bg2;
     private PImage dialog1;
     int stage = 0;
     
@@ -24,7 +24,8 @@ public class MySketch extends PApplet{
     }
     
     public void setup(){
-        bg = loadImage("images/background.png");
+        bg = loadImage("images/background.jpg");
+        bg2 = loadImage("images/background2.png");
         textSize(20);
         // new Player(PApplet p, x, y, name, w, imagePath)
         player = new Player(this, 10, 200, "Player 1", 30, "images/monster.png");
@@ -46,6 +47,20 @@ public class MySketch extends PApplet{
             image(bg, 0, 0, width, height);
             player.draw();
             npc.draw();
+            
+            if (player.x > width) {
+                stage = 2;
+                player.x = 0;
+            }
+
+        } else if (stage == 2) {
+            image(bg2, 0, 0, width, height);
+            player.draw();
+            
+            if (player.x < 0) {
+                stage = 1;
+                player.x = width;
+            }
         }
         
     if (keyPressed) {
@@ -64,6 +79,7 @@ public class MySketch extends PApplet{
     if (npc.isCollidingWith(player)) {
         image(dialog1, 0, 245);
     }
+    
 }
     
     public void keyPressed() {

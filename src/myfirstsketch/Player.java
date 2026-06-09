@@ -15,7 +15,6 @@ public class Player {
     public int x, y;
     private String name; // name of the person
     private int w; // width and height
-    private int age; // age of the person
     private PImage image;
     private PApplet app;
     private PlayerStats stats;
