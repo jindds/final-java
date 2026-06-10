@@ -13,9 +13,10 @@ import processing.core.PImage;
  */
 public class MySketch extends PApplet{
     private Player player;
-    private Player npc;
+    private Player npc, granny;
     private PImage bg, bg2;
-    private PImage dialog1;
+    private PImage dialog1, dialog2, dialog3;
+    public int dialogueOp = -1;
     int stage = 0;
     
     public void settings(){
@@ -24,16 +25,22 @@ public class MySketch extends PApplet{
     }
     
     public void setup(){
-        bg = loadImage("images/background.jpg");
-        bg2 = loadImage("images/background2.png");
+        // https://cainos.itch.io/pixel-art-top-down-village
+        bg = loadImage("images/background4.png");
+        bg2 = loadImage("images/background3.png");
         textSize(20);
         // new Player(PApplet p, x, y, name, w, imagePath)
-        player = new Player(this, 10, 200, "Player 1", 30, "images/monster.png");
+        player = new Player(this, 369, 218, "Player 1", 35, "images/player.png");
         npc = new Player(this, 108, 160, "npc 1", 35, "images/npc.png");
+        granny = new Player(this, 145, 267, "npc 2", 35, "images/grannynpc.png");
         
         // https://deathgenerator.com/#cs
         dialog1 = loadImage("images/dialog1.png");
+        dialog2 = loadImage("images/dialog2.png");
+        dialog3 = loadImage("images/dialog3.png");
         dialog1.resize(600, 0);
+        dialog2.resize(600, 0);
+        dialog3.resize(600, 0);
     }
     
     public void draw(){
@@ -43,23 +50,42 @@ public class MySketch extends PApplet{
             fill(0);
             text("My cultural Story", 20, 50);
             text("Press any key to continue", 20, 100);
-        } else if (stage ==1) {
+        } else if (stage == 1) {
             image(bg, 0, 0, width, height);
             player.draw();
             npc.draw();
             
-            if (player.x > width) {
+            if (npc.isCollidingWith(player)) {
+                if (dialogueOp == -1) {
+                    dialogueOp = 0;
+                }
+                
+                if (dialogueOp == 0) {
+                    image(dialog1, 0, 245);
+                } else if (dialogueOp == 1) {
+                    image(dialog3, 0, 245);
+                }
+            } else {
+                dialogueOp = -1;
+            }
+            
+            if (player.y > height) {
                 stage = 2;
-                player.x = 0;
+                player.y = 0;
             }
 
         } else if (stage == 2) {
             image(bg2, 0, 0, width, height);
             player.draw();
+            granny.draw();
             
-            if (player.x < 0) {
+            if (granny.isCollidingWith(player)) {
+                image(dialog2, 0, 245);
+            }
+            
+            if (player.y < 0) {
                 stage = 1;
-                player.x = width;
+                player.y = height;
             }
         }
         
@@ -74,11 +100,7 @@ public class MySketch extends PApplet{
           player.move(0, 5);
         }
 
-    }
-    
-    if (npc.isCollidingWith(player)) {
-        image(dialog1, 0, 245);
-    }
+    }    
     
 }
     
@@ -88,11 +110,15 @@ public class MySketch extends PApplet{
                 stage = 1;
             }
         }
+        
+        if (keyCode == ENTER && npc.isCollidingWith(player)) {
+            dialogueOp++;
+        }
     }
 
     
     public void mousePressed() {
-        player.moveTo(mouseX, mouseY);
+        // player.moveTo(mouseX, mouseY);
         System.out.println("x: "+ mouseX+ " y: "+ mouseY);
     }
         
