@@ -15,7 +15,7 @@ public class MySketch extends PApplet{
     private Player player;
     private Player npc, granny;
     private PImage bg, bg2;
-    private PImage dialog1, dialog2, dialog3;
+    private PImage dialog1, dialog2, dialog3, dialog4, dialog5;
     public int dialogueOp = -1;
     int stage = 0;
     
@@ -38,9 +38,13 @@ public class MySketch extends PApplet{
         dialog1 = loadImage("images/dialog1.png");
         dialog2 = loadImage("images/dialog2.png");
         dialog3 = loadImage("images/dialog3.png");
+        dialog4 = loadImage("images/dialog4.png");
+        dialog5 = loadImage("images/dialog5.png");
         dialog1.resize(600, 0);
         dialog2.resize(600, 0);
         dialog3.resize(600, 0);
+        dialog4.resize(600, 0);
+        dialog5.resize(600, 0);
     }
     
     public void draw(){
@@ -64,6 +68,8 @@ public class MySketch extends PApplet{
                     image(dialog1, 0, 245);
                 } else if (dialogueOp == 1) {
                     image(dialog3, 0, 245);
+                } else if (dialogueOp == 2) {
+                    image(dialog4, 0, 245);
                 }
             } else {
                 dialogueOp = -1;
@@ -80,7 +86,17 @@ public class MySketch extends PApplet{
             granny.draw();
             
             if (granny.isCollidingWith(player)) {
-                image(dialog2, 0, 245);
+                if (dialogueOp == -1) {
+                    dialogueOp = 0;
+                }
+
+                if (dialogueOp == 0) {
+                    image(dialog5, 0, 245);
+                } else if (dialogueOp == 1) {
+                    image(dialog2, 0, 245);
+                }
+            } else {
+                dialogueOp = -1;
             }
             
             if (player.y < 0) {
@@ -112,6 +128,8 @@ public class MySketch extends PApplet{
         }
         
         if (keyCode == ENTER && npc.isCollidingWith(player)) {
+            dialogueOp++;
+        } else if (keyCode == ENTER && granny.isCollidingWith(player)) {
             dialogueOp++;
         }
     }
